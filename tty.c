@@ -141,6 +141,18 @@ tty_resize(struct tty *tty)
 		} else
 			ypixel = ws.ws_ypixel / sy;
 
+		/*
+		 * Some terminals report a bogus winsize pixel size (notably
+		 * Windows OpenSSH, which hardcodes 640x480), giving absurd cell
+		 * dimensions. When "ignore-winsize-pixels" is set, discard the
+		 * ioctl pixels and rely on the CSI 14t reply queried below
+		 * (accurate), falling back to DEFAULT_[XY]PIXELS if unanswered.
+		 */
+		if (options_get_number(global_options, "ignore-winsize-pixels")) {
+			xpixel = 0;
+			ypixel = 0;
+		}
+
 		if ((xpixel == 0 || ypixel == 0) &&
 		    tty->out != NULL &&
 		    !(tty->flags & TTY_WINSIZEQUERY) &&

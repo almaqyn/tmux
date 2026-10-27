@@ -413,6 +413,16 @@ const struct options_table_entry options_table[] = {
 		  "clients."
 	},
 
+	{ .name = "ignore-winsize-pixels",
+	  .type = OPTIONS_TABLE_FLAG,
+	  .scope = OPTIONS_TABLE_SERVER,
+	  .default_num = 0,
+	  .text = "Whether to ignore the pixel size reported by the terminal's "
+	          "winsize ioctl and instead query it with the CSI 14t escape "
+	          "sequence, falling back to a default cell size. Useful when a "
+	          "terminal or SSH client reports a bogus pixel size."
+	},
+
 	{ .name = "extended-keys",
 	  .type = OPTIONS_TABLE_CHOICE,
 	  .scope = OPTIONS_TABLE_SERVER,
